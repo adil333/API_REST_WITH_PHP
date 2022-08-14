@@ -33,4 +33,17 @@ class Products
             echo "Erreur execute requete read all :" . '' . $e->getMessage();
         }
     }
+
+    public function readOne(){
+        $product_id = htmlspecialchars(strip_tags($this->id));
+        $sql = "SELECT * from produits where id = :id";
+        $query = $this->connexion->prepare($sql);
+        try {
+            $query->execute([":id" => "$product_id"]);
+            return $query;
+        } catch (PDOException $e) {
+            echo "Erreur execute requete read One :" . '' . $e->getMessage();
+        }
+
+    }
 }

@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     $Instance = Database::getInstance();
     $database = $Instance->getConnetion();
     $products = new Products($database);
-    $donnees = json_decode(file_get_contents("php://input"));
-    if (!empty($donnees->id)) {
-        $products->id = $donnees->id;
+    $data = json_decode(file_get_contents("php://input"));
+    if (!empty($data->id)) {
+        $products->id = $data->id;
         $stmt = $products->readOne();
         if ($stmt->rowCount() > 0) {
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -32,13 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         } else {
             http_response_code(404);
             echo json_encode([
-                "message" => "le produit avec  id: ".$donnees->id . " n'exite pas"
+                "message" => "le produit avec  id: ".$data->id . " n'exite pas"
             ]);
         }
     }else{
         http_response_code(404);
             echo json_encode([
-                "message" => "l'id du produit a renvoyer n'est pas difini"
+                "message" => "l'id du produit a renvoyer n'est pas difini ou n'est pas correct"
             ]);
     }
 } else {

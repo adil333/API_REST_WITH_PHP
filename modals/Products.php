@@ -18,9 +18,7 @@ class Products
     {
         $this->connexion = $db;
     }
-    public function create()
-    {
-    }
+   
 
     public function readAll()
     {
@@ -43,6 +41,24 @@ class Products
             return $query;
         } catch (PDOException $e) {
             echo "Erreur execute requete read One :" . '' . $e->getMessage();
+        }
+
+    }
+
+    public function create(){
+
+        $sql = "INSERT INTO `produits` (`nom`, `description`, `prix`, `categories_id`) VALUES (:name, :discriptiuon, :price, :category_id)";
+        $query = $this->connexion->prepare($sql);
+        try {
+            $query->execute([
+                ":name" => "$this->name", 
+                ":discriptiuon" => "$this->description",
+                ":price" => "$this->price",
+                ":category_id" => "$this->category_id"
+            ]); 
+            return $query;
+        }  catch (PDOException $e) {
+            echo "Erreur execute requete Create :" . '' . $e->getMessage();
         }
 
     }

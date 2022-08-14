@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $Instance = Database::getInstance();
     $database = $Instance->getConnetion();
     $products = new Products($database);
-    
+
     $data = json_decode(file_get_contents("php://input"));
     if (!empty($data->nom) && !empty($data->description) && !empty($data->prix) && !empty($data->categories_id)){
         $products->name  =  $data->nom;
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 "message" => "L'ajout a echouée"
             ]);
 
-        }
+        }  
 
     }
 }else{

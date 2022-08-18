@@ -2,7 +2,7 @@
 
 class Database {
 
-    private string $dsn ="mysql:dbname=api_rest;host=localhost";
+    private string $dsn ="mysql:dbname=api_rest;host=localhost;charset=utf8";
     private string $username = "root";
     private $password = "";
     protected static $_instance =null;

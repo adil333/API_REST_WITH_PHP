@@ -91,7 +91,6 @@ class Products
         $product_description = htmlspecialchars(strip_tags($this->description));
         $product_price = htmlspecialchars(strip_tags($this->price));
         $product_category_id = htmlspecialchars(strip_tags($this->category_id));
-
         $sql = "UPDATE `produits` set nom = :name, 
                                       description = :description, 
                                       prix = :price, 

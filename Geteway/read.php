@@ -18,9 +18,6 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-
-    include_once '../config/Database.php';
-    include_once '../modals/Products.php';
     $Instance = Database::getInstance();
     $database = $Instance->getConnetion();
     $products = new Products($database);
@@ -29,11 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     http_response_code(200);
     if ($stmt->rowCount() > 0) {
         // On encode en json et on envoie
-        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }else{
-        echo json_encode(["message" => "Aucun Produit Pour le moment"]);
+        echo json_encode(["message" => "Aucun Produit Pour le moment"], JSON_UNESCAPED_UNICODE);
     }
 } else {
     http_response_code(405);
-    echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+    echo json_encode(["message" => "on est dans le get La méthode n'est pas autorisée"], JSON_UNESCAPED_UNICODE);
 }

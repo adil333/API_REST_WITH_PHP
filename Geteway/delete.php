@@ -8,7 +8,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Méthode autorisée
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: DELETE");
 
 // Durée de vie de la requête
 header("Access-Control-Max-Age: 3600");
@@ -16,34 +16,30 @@ header("Access-Control-Max-Age: 3600");
 // Entêtes autorisées
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    include_once '../config/Database.php';
-    include_once '../modals/Products.php';
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE'){
     $Instance = Database::getInstance();
     $database = $Instance->getConnetion();
     $products = new Products($database);
 
-    $data = json_decode(file_get_contents("php://input"));
-    if (!empty($data->nom) && !empty($data->description) && !empty($data->prix) && !empty($data->categories_id)){
-        $products->name  =  $data->nom;
-        $products->description = $data->description;
-        $products->price = $data->prix;
-        $products->category_id=$data->categories_id;
-        $result = $products->create();
-
+    if (isset($URL[3]) && !empty($URL[3])){
+        $products->id  =  $URL[3];
+        $result = $products->delete();
+        $count = $result->rowCount();
         if($result == true){
-
-            http_response_code(201);
+           
+            http_response_code(200);
             echo json_encode([
-                "message" => "L'ajout a été effectué"
-            ]);
+                "message" => "La suppression a été effectué",
+                "rows_affected" => $count
+            ], JSON_UNESCAPED_UNICODE);
 
         }else{
 
             http_response_code(503);
             echo json_encode([
-                "message" => "L'ajout a echouée"
-            ]);
+                "message" => "La suppression a echouée",
+                "rows_affected" => $count
+            ], JSON_UNESCAPED_UNICODE);
 
         }  
 
@@ -52,5 +48,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     http_response_code(405);
     echo json_encode([
         "message" => "La méthode n'est pas autorisée"
-    ]);
+    ], JSON_UNESCAPED_UNICODE);
 }
